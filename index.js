@@ -6,12 +6,14 @@
  */
 
 const functions = require("firebase-functions");
+const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
-const stripe = require("stripe")(functions.config().stripe.secret);
+const stripeSecret = defineSecret("STRIPE_SECRET_KEY");
 
 admin.initializeApp();
 
 exports.createStripeAccount = functions.https.onCall(async (data, context) => {
+  const stripe = require("stripe")(stripeSecret.value());
   const uid = (data && data.uid) ? data.uid : null;
 
   if (!uid || typeof uid !== "string") {
