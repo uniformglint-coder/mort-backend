@@ -21,8 +21,8 @@ async function run() {
     console.warn('No STRIPE_WEBHOOK_SECRET found in env — the server will reject the signature.');
   }
 
-  // We only need the webhooks helper; stripe instance can be created without secret
-  const stripe = Stripe(stripeApiKey || '');
+  // We only need the webhooks helper; provide a harmless dummy API key if none present
+  const stripe = Stripe(stripeApiKey || 'sk_test_dummy_key_for_local');
 
   const paymentIntent = {
     id: `pi_test_${Date.now()}`,
